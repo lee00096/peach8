@@ -9,7 +9,10 @@ def create(request):
         product_title = request.POST.get('title')
         product_content = request.POST.get('content')
         image = request.FILES.get('image')
-        Product.objects.create(title=product_title, content=product_content, image=image)
+        user = request.user
+        price = request.POST.get('price')
+        stock = request.POST.get('stock')
+        Product.objects.create(title=product_title, content=product_content, image=image, stock=stock, user=user, price=price)
     return render(request, 'main.html')
 
 def main(request):
