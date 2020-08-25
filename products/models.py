@@ -11,3 +11,11 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=True)
     price = models.IntegerField(null=True)
     stock = models.IntegerField(null=True)
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now = True)
