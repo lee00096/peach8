@@ -49,3 +49,8 @@ def create_comment(request, product_id):
         comment_content = request.POST.get('content')
         Comment.objects.create(content=comment_content, user=current_user, product=product)
     return redirect('products:show', product_id)
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.delete()
+    return redirect('Product', pk=product_id)
