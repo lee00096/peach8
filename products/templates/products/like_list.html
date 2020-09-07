@@ -5,26 +5,26 @@
 {% include 'shared/_navbar.html' %}
     <div class="container">
         {% if user.is_authenticated %}
-            <h1>판매 목록</h1>
+            <h1>좋아요 한 글 목록</h1>
             <div class="row">
-                {% for product in products %}
+                {% for like in likes %}
                     <div class="col-md-4 col-12">
                         <div class="card" style="width: 18rem; margin-top: 20px;">
                             <div class="card-body">
-                                <h5 class="card-title">{{ product.title }}</h5>
-                                <p class="card-content">{{ product.content }}</p>
-                                <p>가격 : {{ product.price }}</p>
-                                <p>재고 : {{ product.stock }}</p>
-                                <p>조회수 : {{ product.view_count }}</p>
-                                <p>좋아요 수: {{ product.like_count }}</p>
-                                <a href="{% url 'products:product_like' product.id %}">
-                                    {% if user in product.like_user_set.all %}
+                                <h5 class="card-title">{{ like.product.title }}</h5>
+                                <p class="card-content">{{ like.product.content }}</p>
+                                <p>가격 : {{ like.product.price }}</p>
+                                <p>재고 : {{ like.product.stock }}</p>
+                                <p>조회수 : {{ like.product.view_count }}</p>
+                                <p>좋아요 수: {{ like.product.like_count }}</p>
+                                <a href="{% url 'products:product_like' like.product.id %}">
+                                    {% if user in like.product.like_user_set.all %}
                                                 <i class="fas fa-heart"></i>
                                     {% else %}
                                                 <i class="far fa-heart"></i>
                                     {% endif %}
                                 </a>
-                                <a href="{% url 'products:show' product.pk %}" class="btn btn-primary">상세보기</a>
+                                <a href="{% url 'products:show' like.product.pk %}" class="btn btn-primary">상세보기</a>
                             </div>
                         </div>
                     </div>

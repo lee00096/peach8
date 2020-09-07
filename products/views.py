@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Comment
+from django.contrib.auth.decorators import login_required
 
 def new(request):
     return render(request, 'products/new.html')
@@ -54,3 +55,26 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.delete()
     return redirect('Product', pk=product_id)
+
+@login_required
+def product_like(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    product_like, product_like_created = product.like_set.get_or_create(user=request.user)
+
+    if not product_like_created:
+                product_like.delete()
+
+    # if request.user in product.like_user_set.all():
+    #     product.like_user_set.remove(request.user)
+    # else:
+    #     product.like_user_set.add(request.user)
+
+    if request.GET.get('redirect_to') =='show':
+            return redirect('products:show', product_id)
+    else:
+            return redirect('products:main')
+
+@login_required
+def like_list(request):
+    likes = request.user.like_set.all()
+    return render(request,'products/like_list.html',{'likes':likes})

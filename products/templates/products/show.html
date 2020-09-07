@@ -24,13 +24,22 @@
     <h3>조회수 : {{ product.view_count }}</h3>
     <h3>작성 시간 : {{ product.created_at }}</h3>
     <h3>수정 시간 : {{ product.updated_at }}</h3>
+    <h3>좋아요 수: {{ product.like_count }}</h3>
 
     {% if user == product.user %}
     <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">수정하기</a>
     <a href="{% url 'products:delete' product.pk %}" class="btn btn-primary">삭제하기</a>
     {% endif %}
 </div>
-
+<div class="container mt-5">
+    <a href="{% url 'products:product_like' product.id %}?redirect_to=show">
+        {% if user in product.like_user_set.all %}
+                    <i class="fas fa-heart"></i>
+        {% else %}
+                    <i class="far fa-heart"></i>
+        {% endif %}
+    </a>
+</div>
 <div class="container mt-5">
     <form class="form-row" action="{% url 'products:create_comment' product.id %}" method="POST">
       {% csrf_token %}
